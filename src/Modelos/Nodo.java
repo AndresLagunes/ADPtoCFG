@@ -8,8 +8,6 @@ import java.util.ArrayList;
  */
 public class Nodo {
     public int idNodo;
-    public ArrayList<Transicion> transicionesOut;
-    public ArrayList<Transicion> transicionesIn;
     public boolean nodoInicio;
     public boolean nodoAceptacion;
 
@@ -18,10 +16,8 @@ public class Nodo {
     
     
 
-    public Nodo(int idNodo, ArrayList<Transicion> transicionesOut, ArrayList<Transicion> transicionesIn, boolean nodoInicio, boolean nodoAceptacion) {
+    public Nodo(int idNodo, boolean nodoInicio, boolean nodoAceptacion) {
         this.idNodo = idNodo;
-        this.transicionesOut = transicionesOut;
-        this.transicionesIn = transicionesIn;
         this.nodoInicio = nodoInicio;
         this.nodoAceptacion = nodoAceptacion;
     }
@@ -33,13 +29,6 @@ public class Nodo {
         this.idNodo = idNodo;
     }
 
-    public void setNodosOut(ArrayList<Transicion> transicionesOut) {
-        this.transicionesOut = transicionesOut;
-    }
-
-    public void setNodosIn(ArrayList<Transicion> transicionesIn) {
-        this.transicionesIn = transicionesIn;
-    }
 
     public void setNodoInicio(boolean nodoInicio) {
         this.nodoInicio = nodoInicio;
@@ -56,13 +45,6 @@ public class Nodo {
         return idNodo;
     }
 
-    public ArrayList<Transicion> getNodosOut() {
-        return transicionesOut;
-    }
-
-    public ArrayList<Transicion> getNodosIn() {
-        return transicionesIn;
-    }
 
     public boolean isNodoInicio() {
         return nodoInicio;

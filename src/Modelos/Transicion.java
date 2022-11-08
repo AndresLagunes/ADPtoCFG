@@ -79,5 +79,11 @@ public class Transicion {
     public String getPush() {
         return push;
     }
+
+    @Override
+    public String toString() {
+        return "Transicion{" + "nodoFrom= q" + nodoFrom.idNodo + ", nodoTo= q" + nodoTo.idNodo + ", read=" + read + ", pop=" + pop + ", push=" + push + '}';
+    }
+    
     
 }
