@@ -14,6 +14,12 @@ public class ADPToCFG {
             new ArrayList()//pila
     );
     
+    public static GLC gramatica = new GLC(
+            new ArrayList(),
+            new ArrayList(),
+            new ArrayList()
+    );
+    
     public static void main(String[] args) {
         automata.alfabeto.alfabeto.add(0,"0");
         automata.alfabeto.alfabeto.add(1,"1");
@@ -22,16 +28,49 @@ public class ADPToCFG {
         add2();
         
         prepararAutomata(automata);
-        convertirAutomata(automata);
+        gramatica = convertirAutomata(automata);
         
         
         
 //        automata.recorrerAutomata(cadena);
     }
     
-    static void convertirAutomata(Automata a){
+    static GLC convertirAutomata(Automata a){
         GLC gramatica = new GLC(new ArrayList(), new ArrayList(), new ArrayList());
-//        gramatica.producciones()
+        //producciones de tipo 1, que corresponden a transiciones
+        //que llevan de un nodo, al mismo nodo con épsilon
+        ArrayList<Produccion> type1 = new ArrayList();
+        a.nodosA.forEach((n) -> {
+            type1.add(new Produccion("Aq"+n.idNodo+",q"+n.idNodo, ""));
+        });
+        gramatica.producciones.addAll(type1);
+        System.out.println("reglas totales tipo 1"+type1.size());
+        //producciones de tipo 2, son producciones que llevan de un nodo a otro
+        //pasando por otro nodo
+        ArrayList<Produccion> type2 = new ArrayList();
+        a.nodosA.forEach((n1) -> {
+            a.nodosA.forEach((n2) -> {
+               a.nodosA.forEach((n3) -> {
+                   type2.add(new Produccion("Aq"+n1.idNodo+",q"+n2.idNodo, "Aq"+n1.idNodo+",q"+n3.idNodo + "Aq"+n3.idNodo+",q"+n2.idNodo));
+                }); 
+            });
+        });
+        gramatica.producciones.addAll(type2);
+        System.out.println("reglas totales tipo 2"+type2.size());
+        
+        //producciones de tipo 3, corresponden a un par de transiciones en donde una hace push
+        //de un caracter y la otra hace pop de ese mismo caracter
+        ArrayList<Produccion> type3 = new ArrayList();
+        a.transicionesA.forEach((t1) -> {
+            a.transicionesA.forEach((t2) -> {
+                if(t1.push == t2.pop){
+                    type3.add(new Produccion("Aq"+t1.nodoFrom.idNodo+",q"+t2.nodoTo.idNodo, t1.read+ "Aq"+t1.nodoTo.idNodo+",q"+t2.nodoFrom.idNodo + t2.read));
+                }
+            });
+        });
+        gramatica.producciones.addAll(type3);
+        System.out.println("reglas totales tipo 3"+type3.size());
+        return gramatica;
     }
     
     static void prepararAutomata(Automata a){
